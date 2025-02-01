@@ -26,16 +26,16 @@ class CoinDetailActivity : AppCompatActivity() {
         }
         val fromSymbol = intent.getStringExtra(EXTRA_FROM_SYMBOL) ?: ""
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
-        viewModel.getDetailInfo(fromSymbol).observe(this, Observer {
-            binding.tvPrice.text = it.price
-            binding.tvMinPrice.text = it.lowDay
-            binding.tvMaxPrice.text = it.highDay
-            binding.tvLastMarket.text = it.lastMarket
-            binding.tvLastUpdate.text = it.getFormattedTime()
-            binding.tvFromSymbol.text = it.fromSymbol
-            binding.tvToSymbol.text = it.toSymbol
-            Picasso.get().load(it.getFullImageUrl()).into(binding.ivLogoCoin)
-        })
+//        viewModel.getDetailInfo(fromSymbol).observe(this, Observer {
+//            binding.tvPrice.text = it.price
+//            binding.tvMinPrice.text = it.lowDay
+//            binding.tvMaxPrice.text = it.highDay
+//            binding.tvLastMarket.text = it.lastMarket
+//            binding.tvLastUpdate.text = it.getFormattedTime()
+//            binding.tvFromSymbol.text = it.fromSymbol
+//            binding.tvToSymbol.text = it.toSymbol
+//            Picasso.get().load(it.getFullImageUrl()).into(binding.ivLogoCoin)
+//        })
     }
 
     companion object {
