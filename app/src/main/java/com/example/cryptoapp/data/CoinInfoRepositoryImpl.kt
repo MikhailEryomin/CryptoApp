@@ -22,6 +22,7 @@ class CoinInfoRepositoryImpl(
 
     private val apiService = ApiFactory.apiService
 
+
     override fun getListCoinInfo(): LiveData<List<CoinInfo>> {
         return MediatorLiveData<List<CoinInfo>>().apply {
             addSource(coinInfoDao.getPriceList()) {
@@ -38,18 +39,18 @@ class CoinInfoRepositoryImpl(
         }
     }
 
-    override fun loadData() {
-
-        CoroutineScope(Dispatchers.Main).launch {
-            while (true) {
+    override suspend fun loadData() {
+        while (true) {
+            try {
                 val nameListDto = apiService.getTopCoinsInfo(limit = LIMIT)
                 val namesString = mapper.mapNameListToString(nameListDto)
                 val jsonContainer = apiService.getFullPriceList(fSyms = namesString)
                 val coinInfoListDto = mapper.mapJsonContainerToListDto(jsonContainer)
                 val coinInfoListDbModel = mapper.mapDtoListToDbModelList(coinInfoListDto)
                 coinInfoDao.insertPriceList(coinInfoListDbModel)
-                delay(10000)
+            } catch (_: Exception) {
             }
+            delay(10000)
         }
     }
 
