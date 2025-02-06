@@ -6,8 +6,10 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.example.cryptoapp.data.db.AppDatabase
+import com.example.cryptoapp.data.db.CoinInfoDao
 import com.example.cryptoapp.data.mapper.CoinInfoMapper
 import com.example.cryptoapp.data.network.ApiFactory
+import com.example.cryptoapp.data.network.CoinInfoDto
 import com.example.cryptoapp.domain.CoinInfo
 import com.example.cryptoapp.domain.CoinInfoRepository
 import com.example.cryptoapp.presentation.RefreshDataWorker
@@ -16,13 +18,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CoinInfoRepositoryImpl(
-    private val application: Application
+class CoinInfoRepositoryImpl @Inject constructor (
+    private val application: Application,
+    private val coinInfoDao: CoinInfoDao,
+    private val mapper: CoinInfoMapper
 ) : CoinInfoRepository {
 
-    private val coinInfoDao = AppDatabase.getInstance(application).coinPriceInfoDao()
-    private val mapper = CoinInfoMapper()
+//    private val coinInfoDao = AppDatabase.getInstance(application).coinPriceInfoDao()
+//    private val mapper = CoinInfoMapper()
 
 
     override fun getListCoinInfo(): LiveData<List<CoinInfo>> {

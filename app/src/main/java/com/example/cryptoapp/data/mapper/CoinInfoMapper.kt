@@ -11,8 +11,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
 
-class CoinInfoMapper {
+class CoinInfoMapper @Inject constructor(){
 
     fun mapJsonContainerToListDto(jsonContainer: CoinInfoJsonContainerDto): List<CoinInfoDto> {
         val result = ArrayList<CoinInfoDto>()

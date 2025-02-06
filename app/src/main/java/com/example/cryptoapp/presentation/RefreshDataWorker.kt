@@ -7,19 +7,25 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.example.cryptoapp.data.db.AppDatabase
+import com.example.cryptoapp.data.db.CoinInfoDao
 import com.example.cryptoapp.data.mapper.CoinInfoMapper
 import com.example.cryptoapp.data.network.ApiFactory
+import com.example.cryptoapp.data.network.ApiService
+import com.example.cryptoapp.domain.CoinInfo
 import kotlinx.coroutines.delay
 
 class RefreshDataWorker(
     context: Context,
-    workerParameters: WorkerParameters
-): CoroutineWorker(context, workerParameters) {
+    workerParameters: WorkerParameters,
+    private val coinInfoDao: CoinInfoDao,
+    private val mapper: CoinInfoMapper,
+    private val apiService: ApiService
+) : CoroutineWorker(context, workerParameters) {
 
-    private val coinInfoDao = AppDatabase.getInstance(context).coinPriceInfoDao()
-    private val mapper = CoinInfoMapper()
+//    private val coinInfoDao = AppDatabase.getInstance(context).coinPriceInfoDao()
+//    private val mapper = CoinInfoMapper()
 
-    private val apiService = ApiFactory.apiService
+//    private val apiService = ApiFactory.apiService
 
     override suspend fun doWork(): Result {
         while (true) {

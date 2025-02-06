@@ -1,27 +1,45 @@
 package com.example.cryptoapp.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.cryptoapp.AppClass
 import com.example.cryptoapp.databinding.FragmentCoinDetailBinding
 import com.example.cryptoapp.domain.CoinInfo
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
-class CoinDetailFragment: Fragment() {
+class CoinDetailFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: CoinViewModelFactory
+
+    private val viewModel: CoinViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[CoinViewModel::class.java]
+    }
+
+    private val component by lazy {
+        (requireActivity().application as AppClass).component
+    }
 
     private var _binding: FragmentCoinDetailBinding? = null
     private val binding: FragmentCoinDetailBinding
         get() = _binding ?: throw RuntimeException("FragmentCoinDetailBinding = null")
 
-    private lateinit var viewModel: CoinViewModel
     private lateinit var fromSymbol: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fromSymbol = requireArguments().getString(FROM_SYM_KEY, EMPTY_SYMBOL)
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
@@ -35,7 +53,6 @@ class CoinDetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
         viewModel.getDetailInfo(fromSymbol).observe(viewLifecycleOwner) {
             bindViews(it)
         }
